@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Geolocation</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 50%;
+        width: 50%;
+        
+        
+      }
+      /* Optional: Makes the sample page fill the window. */
+       body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        height:100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="map.js"></script>
+    <script type="text/javascript">
+      window.onload = function(){
+        console.log("running")
+        document.getElementsByTagName("body")[0].onresize = function() {
+        console.log("resize");
+        resize(document.getElementById("map"), "float", "left", "right");
+          
+        };
+      };
+       console.log($('body').height());
+       
+       function resize(elem, css, valueT, valueF){
+        if($('body').width()>500){
+           $(elem).css(css, valueT);
+        }
+        else{
+          $(elem).css(css, valueF);
+        }
+       }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2agSXIC0I1AuJXHQAGTAz-4o0R4lVMc8&libraries=places&callback=initMap" async defer></script>
+  </body>
+</html>

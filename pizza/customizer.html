@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            #switches{
+                height: 50%;
+                width: 50%;
+                float: left;
+                background: green;
+            }
+            #canvasWrapper{
+                height: 50%;
+                margin: auto;
+                left: 50%;
+                background: blue;
+                position: relative;
+                
+            }
+            .switch{
+                padding: 5%;
+            }
+              /* Optional: Makes the sample page fill the window. */
+               body {
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+              }
+              html {
+                height:100%;
+              }
+              #customizer{
+                  background: red;
+              }
+        </style>
+    </head>
+    <body>
+        <div id="switches">
+            <div class="switch">
+                <input type="checkbox" id="dough">
+            </div>
+            <div class="switch">
+                <input type="checkbox" id="sauce">
+            </div>
+            <div class="switch">
+                <input type="checkbox" id="cheese">
+            </div>
+            <div class="switch">
+                <input type="checkbox" id="pep">
+            </div>
+        </div>
+        <div id="canvasWrapper">
+            <canvas id="customizer"></canvas>
+        </div>
+        <script type="text/javascript">
+            var switches=[];
+            var ingredients=[];
+            var mobile;
+            var canvas=document.getElementById("customizer");
+            var ctx=canvas.getContext("2d");
+            window.onload=init();
+            
+            function init(){
+                fitCanvas();
+                console.log(document.body.clientWidth);
+                if (document.body.clientWidth>500 && document.body.clientHeight>500){
+                    mobile=false;
+                }
+                else{
+                    mobile=true;
+                }
+                console.log(mobile);
+               for (var i=0; i<4; i++){
+                   switches.push(document.getElementsByTagName("input")[i]);
+               }
+               for(var i=0; i<switches.length; i++){
+                   ingredients.push({ingredient: switches[i].id, order: i, img: switches[i].id+".png"});
+                   
+               }
+               console.log(ingredients);
+               console.log(switches);
+            }
+            
+            function fitCanvas(){
+                canvas.style.width="100%"
+                canvas.style.height="100%"
+            }
+                
+            
+        </script>
+    </body>
+</html>
