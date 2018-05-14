@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="" id="layout">
+        
+    </head>
+    <body>
+              
+        <img src="doughFInal.png" id='dough' width='300' height='300' class="single" style="display: none"/>
+        <img src="sauceFinal.gif" id='sauce' width='250' height='250' class="single" style="display: none"/>
+        <img src="cheese.png" id='cheese' width='245' height='245' class="single" style="display: none"/>
+        <img src="pep.gif" id='pep' width='30' height='30' class="muliple" style="display: none"/>
+        
+        <div id="switches">
+          <div class="switch">
+                <input type="checkbox" id="dough"> Crust</input>
+            </div>  
+            
+            <div class="switch">
+                <input type="checkbox" id="sauce">Tomato Sauce</input>
+            </div>
+            <div class="switch">
+                <input type="checkbox" id="cheese">Mozzarella</input>
+            </div>
+             <div class="switch">
+                <input type="checkbox" id="pep">Pepperoni
+            </div>
+        </div>
+        <div id="canvasWrapper">
+            <canvas style="border: solid" id="canvas" width="150" height="150"/>
+        </div>
+        <div id="map">
+        </div>
+        <script type="text/javascript" >
+            const ratio=.6;
+            var switches=document.getElementsByTagName("input");
+            var images=document.getElementsByTagName('img');
+            var ingredients=[];
+            var canvas=document.getElementById("canvas");
+            var ctx=canvas.getContext('2d');
+            console.log(canvas);
+            
+            
+             var layout=document.getElementById("layout");
+            window.onload=function() {
+               resize();
+               console.log(canvas.width);
+               window.onresize=function(){resize();};
+               initPizza();
+            };
+            
+            function initPizza(){
+                
+                for(var i=0; i<switches.length; i++){
+                    ingredients.push({img: images[i], size: images[i].width/300, on: switches[i].checked, frequency: images[i].getAttribute("class")});
+                }
+                makePizza();
+                document.addEventListener("click", function(){
+                    console.log("clicked");
+                    makePizza();});
+            }
+            function drawCenter(img, x, y, width, height){
+                ctx.drawImage(img, x-width/2, y-height/2, width, height);
+            }
+            
+        function makePizza(){
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for(var i=0; i<ingredients.length; i++){
+                if(switches[i].checked==true && switches[0].checked==true){
+                    ingredients[i].on=true;
+                }
+                else{
+                    ingredients[i].on=false;
+                }
+                if(ingredients[i].on){
+                    console.log(ingredients[i].frequency)
+                    if(ingredients[i].frequency=="single"){
+                        drawCenter(ingredients[i].img, canvas.width/2, canvas.height/2, canvas.width*ratio*ingredients[i].size, canvas.width*ratio*ingredients[i].size);
+                    }
+                    else{
+                        for(var x=0; x<10; x++){
+                            //console.log(getRandomInt(canvas.width/2-canvas.width*ratio*ingredients[i].size/4, canvas.width/2+canvas.width*ratio*ingredients[i].size/4))
+                            drawCenter(ingredients[i].img, getRandomInt(canvas.width/2-canvas.width*ratio*ingredients[0].size/4, canvas.width/2+canvas.width*ratio*ingredients[0].size/4), getRandomInt(canvas.height/2-canvas.width*ratio*ingredients[0].size/4, canvas.height/2+canvas.width*ratio*ingredients[0].size/4),   canvas.width*ratio*ingredients[i].size, canvas.width*ratio*ingredients[i].size);
+                        }
+                    }
+                }
+            }
+        }
+            function getRandomInt(min, max) {
+              min = Math.ceil(min);
+              max = Math.floor(max);
+              return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+            }
+            
+            function resize(){
+                console.log(document.body.clientWidth);
+                 if(document.body.clientWidth>500){
+                    layout.href="desktop.css";
+                }
+                else{
+                    layout.href="mobile.css";
+                }
+                console.log(document.getElementById("canvasWrapper").style.width);
+                
+                console.log(document.getElementById("layout").href);
+            }
+            function fitToContainer(canvas){
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+              // Make it visually fill the positioned parent
+              // ...then set the internal size to match
+              canvas.style.width="25%";
+              canvas.style.height="25%";
+              canvas.style.margin="auto";
+            }
+                    
+                
+            
+        </script>
+        <script type="text/javascript" src="map.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2agSXIC0I1AuJXHQAGTAz-4o0R4lVMc8&libraries=places&callback=initMap" async defer></script>
+    </body>
+</html>

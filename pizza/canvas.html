@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+    </head>
+    <body>
+        <div id="container">
+            <canvas width='100' height= '100' style="border: solid" id="canvas"/>
+        </div>
+        <img src="doughFInal.png" id='dough' width='300' height='300' class="single" style="display: none"/>
+        <img src="sauceFinal.gif" id='sauce' width='250' height='250' class="single" style="display: none"/>
+        <img src="cheese.png" id='cheese' width='245' height='245' class="single" style="display: none"/>
+        <img src="pep.gif" id='pep' width='30' height='30' class="muliple" style="display: none"/>
+        
+        <div id="switches">
+          <div class="switch">
+                <input type="checkbox" id="dough"> Crust
+            </div>  
+            
+            <div class="switch">
+                <input type="checkbox" id="sauce">Tomato Sauce
+            </div>
+            <div class="switch">
+                <input type="checkbox" id="cheese">Mozzarella
+            </div>
+        <div>
+                <input type="checkbox" id="pep">Pepperoni
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        const ratio=.6;
+        var images=document.getElementsByTagName('img');
+        var switches=document.getElementsByTagName("input");
+        var ingredients=[];
+        var canvas=document.getElementById("canvas");
+        var ctx=canvas.getContext('2d');
+        console.log(images);
+        
+        
+        window.onload=function(){
+            reset()
+            makePizza();
+            console.log(ingredients[images.length-1].img)
+            document.addEventListener("click", function(){
+                console.log("clicked");
+                makePizza();});
+        };
+        
+        function reset(){
+            ingredients=[];
+            for(var i=0; i<images.length; i++){
+                ingredients.push({img: images[i], size: (images[i].width/300), on: switches[i].checked, frequency: images[i].getAttribute("class")});
+                console.log(images[i].getAttribute("class"))
+                console.log(JSON.stringify(ingredients))
+    
+                
+            }
+            
+        }
+        
+        function drawCenter(img, x, y, width, height){
+            ctx.drawImage(img, x-width/2, y-height/2, width, height);
+        }
+        
+        function makePizza(){
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for(var i=0; i<ingredients.length; i++){
+                if(switches[i].checked==true && switches[0].checked==true){
+                    ingredients[i].on=true;
+                }
+                else{
+                    ingredients[i].on=false;
+                }
+                if(ingredients[i].on){
+                    console.log(ingredients[i].frequency)
+                    if(ingredients[i].frequency=="single"){
+                        drawCenter(ingredients[i].img, canvas.width/2, canvas.height/2, canvas.width*ratio*ingredients[i].size, canvas.width*ratio*ingredients[i].size);
+                    }
+                    else{
+                        for(var x=0; x<10; x++){
+                            //console.log(getRandomInt(canvas.width/2-canvas.width*ratio*ingredients[i].size/4, canvas.width/2+canvas.width*ratio*ingredients[i].size/4))
+                            drawCenter(ingredients[i].img, getRandomInt(canvas.width/2-canvas.width*ratio*ingredients[0].size/4, canvas.width/2+canvas.width*ratio*ingredients[0].size/4), getRandomInt(canvas.height/2-canvas.width*ratio*ingredients[0].size/4, canvas.height/2+canvas.width*ratio*ingredients[0].size/4),   canvas.width*ratio*ingredients[i].size, canvas.width*ratio*ingredients[i].size);
+                        }
+                    }
+                }
+            }
+        }
+        function getRandomInt(min, max) {
+          min = Math.ceil(min);
+          max = Math.floor(max);
+          return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+        }
+
+        
+        
+        
+    </script>
+</html>

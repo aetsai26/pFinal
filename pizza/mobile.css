@@ -1,19 +1,14 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <style>
-            #switches{
+#switches{
                 height: 50%;
                 width: 50%;
-                float: left;
-                background: white;
+                position: relative;
+                 margin: auto;
             }
             #canvasWrapper{
                 height: 50%;
                 margin: auto;
-                left: 50%;
-                background: yellow;
-                position: relative;
+                width:50%;
+                
             }
             .switch{
                 padding: 5%;
@@ -24,27 +19,12 @@
                 width: 100%;
                 margin: 0;
                 padding: 0;
-                background: aquamarine;
               }
               html {
                 height:100%;
               }
               #map{
-                  background: green;
                   height: 50%;
                   width: 50%;
-                  
-                  
+                  margin: auto;
               }
-        </style>
-    </head>
-    <body>
-        <div id="switches">
-        </div>
-        <div id="canvasWrapper">
-        </div>
-        <div id="map">
-            
-        </div>
-    </body>
-</html>
