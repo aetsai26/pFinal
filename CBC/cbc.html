@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Geocoding service</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #floating-panel {
+        position: absolute;
+        bottom: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="floating-panel">
+        <button id="left" class="move">previous</button>
+        <button id="right" class="move">next</button>  
+    </div>
+    <div id="map"></div>
+    <script>
+        var map;
+        var bounds;
+        var markers =[];
+        var addresses=[{address: "Credo Mutwa South Africa", mode:"WALKING"}, {address: "Johannesburg", mode: "WALKING"},{address: "Orlando South Africa", mode: "WALKING"}, {address: "Alexandra South Africa", mode: "WALKING"}, {address: "Johannesburg South Africa", mode: "WALKING"}];
+        var messages=["The place of beautiful rolling hills and trees, Ndotsheni is the village that we meet the main characters of the novel. Paton uses a lot of imagery to portray the beauty as well as the unpleasant and depressing sides to Ndotsheni. With this it helps to show the views that the two main characters have who started off being very different until they became similar in nature. The setting of Ndotsheni goes along with the moral countryside qualities that are portrayed by Paton who points out these qualities and the setting itself. Ndotsheni acts as the beginning and end to the journey of John Kumalo and completes the transformation of Jarvis into a more accepting man."
+        ,'The city of Johannesburg is South Africa\'s largest city and Paton makes it very clear throughout his novel. The fast paced lifestyle and the crime filled streets of Johannesburg proved to be a vast difference from the small village of Ndotsheni.  The chaos exemplifies the message of the breakdown of the tribes that made up South Africa for centuries before the arrival of the Europeans. Kumalo and James Jarvis both experience the contrasting views that Paton makes very clear between the two cities. One is a peaceful, quiet agrarian village while the other is a industrialized, promptly moving urban area. Although both have their own struggles, Kumalo and Jarvis both prefer the small village of Ndotsheni to Johannesburg while using the village as a point of reference to again show the contrast of the two which is a thematic idea that is commonly portrayed in the novel. Johannesburg is also the city where both the main characters go to begin their journey to find their sons. Their visit to Johannesburg led them on many more adventure however they always came back because “All roads lead to Johannesburg.”'
+        ,"The extreme difficulty of getting a house in Orlando led to a shanty town to be build almost overnight.  At first, many white men came in order to document the squalid conditions of the residents.  However, once more people move in, the police come in and forcefully evict many of the inhabitants.  It is at this point in the novel that Paton directly blames the Europeans for creating the inhospitable conditions that native population had to endure.  He would later elaborate on how the Afrikaners disrupted the previous balance through John Kumalo’s speech"
+        ,"The next stop for Kumalo was Alexandra. To get here he took a bus, but was stop by Dubula, a tribe leader. He persuades them to walk because they are boycotting busses, but get lucky to find a guy that is willing to help them by taking them there. Alexandra is filled with crime mostly against the whites who are attacked and killed. In Alexandra they find out that Absalom and John's son come home very late with money, food, etc. they take a taxi back to johannesburg where the driver tells them where they live now. The overall theme of this city is fear. People are scared by all the crime that occurs in the city and the surrounding of it. People are scared to get caught in the middle of the boycott and decided to walk into the city refusing help by white drivers. The city is so bad that neighboring cities want it destroyed. This city is important to finding their location."
+        ,"After they visit Alexandra they go back to Johannesburg to a place called shanty town. Here the waiting list for homes is impossibly long. They fill rooms with a dozen people in the, and some even being forced to sleep outside. People get seduce here no matter if they are male or female. Dubula and others steal from plantations, train yards, and mines to help aid and survive. People patiently wait to get their turn in owning a home. Here the theme seems to be surrounding sadness. People get their rights violated, they get treated like animals, and have to steal, to survive which in my opinion is sad to see happen."];
+        var index=-1;
+        var geocoder;
+        var marker;
+        var infoWindow;
+        var directionsService;
+        var directionsDisplay;
+      
+      function initMap() {
+        infoWindow= new google.maps.InfoWindow({
+              maxWidth: 200
+            });
+        bounds = new google.maps.LatLngBounds(); 
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 1,
+          center: {lat: 0, lng: 0}
+        });
+        geocoder = new google.maps.Geocoder();
+        for (var i=0; i<addresses.length; i++){
+          geocodeAddress(geocoder, map, addresses[i].address);
+        }
+        addRoutes(addresses);
+        reset(index);
+      }
+
+      function geocodeAddress(geocoder, resultsMap, address) {
+        geocoder.geocode({
+          'address': address,
+        }, 
+        function(results, status) {
+            if (status === 'OK') {
+              resultsMap.setCenter(results[0].geometry.location);
+              marker = new google.maps.Marker({
+                position: results[0].geometry.location,
+                map: map
+              });
+              bounds.extend(marker.position);
+              markers.push(marker);
+            } 
+            else {
+              alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+      }
+        
+        function addWindow(index)
+        {
+            console.log(markers[index].position);
+            if(index>-1){
+              infoWindow.setPosition(markers[index].position);
+              infoWindow.setContent(messages[index]);
+              infoWindow.open(map); 
+            }
+            else{
+              console.log("less");
+              infoWindow.setPosition(null);
+              infoWindow.setContent(messages[index]);
+              infoWindow.close(map);
+            }
+        }
+        
+        
+        
+        document.getElementById("right").addEventListener("click", function(){
+          if(index!=addresses.length-1){
+            index+=1; 
+          }
+          reset(index);
+        });
+        document.getElementById("left").addEventListener("click", function(){
+          if(index!=-1){
+            index-=1;
+          }
+          reset(index)
+        });
+        
+        function reset(index){
+          if(index!=-1){
+            for(var i=0;i<markers.length; i++){
+              markers[i].setMap(null);
+            }
+            markers[index].setMap(map);
+            map.setCenter(markers[index].position);
+            map.setZoom(15);
+          }
+          else{
+            for(var i=0;i<markers.length; i++){
+              markers[i].setMap(map);
+            }
+            map.fitBounds(bounds);
+          }
+          addWindow(index);
+        }
+        
+        
+      function calculateAndDisplayRoute(directionsService, directionsDisplay, origin, destination, mode) {
+        directionsService.route({
+          origin: origin,
+          destination: destination,
+          travelMode: mode
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+      
+      
+      function addRoutes(addresses){
+        for(var i=0; i<addresses.length-1; i++){
+          directionsService = new google.maps.DirectionsService;
+          directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
+          calculateAndDisplayRoute(directionsService, directionsDisplay,addresses[i].address, addresses[i+1].address, addresses[i+1].mode);
+          directionsDisplay.setMap(map);
+        }
+        
+      }
+      
+    </script>
+    <script 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDTN46ExouYC1Mr_zIyoEhR37uWW_CC-Y&callback=initMap">
+    </script>
+  </body>
+</html>

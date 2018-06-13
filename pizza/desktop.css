@@ -3,15 +3,12 @@
                 width: 50%;
                 float: left;
             }
-            #canvasWrapper{
-                height: 50%;
-                width: 50%;
-                left: 50%;
-                position: relative;
-            }
             #canvas{
                 position: relative;
                 top: 0%;
+                margin: auto;
+                width: 25%;
+                height: 25%;
             }
             .switch{
                 padding: 5%;
@@ -22,13 +19,13 @@
                 width: 100%;
                 margin: 0;
                 padding: 0;
+                background: gold;
               }
               html {
                 height:100%;
                 width: 100%;
               }
               #map{
-                  background: green;
                   height: 50%;
                   width: 50%;
                   margin: auto;

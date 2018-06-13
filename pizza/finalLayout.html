@@ -2,14 +2,14 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="" id="layout">
-        
+        <h1>Make Your Own Pizza</h1>
     </head>
     <body>
               
         <img src="doughFInal.png" id='dough' width='300' height='300' class="single" style="display: none"/>
         <img src="sauceFinal.gif" id='sauce' width='250' height='250' class="single" style="display: none"/>
         <img src="cheese.png" id='cheese' width='245' height='245' class="single" style="display: none"/>
-        <img src="pep.gif" id='pep' width='30' height='30' class="muliple" style="display: none"/>
+        <img src="pep.gif" id='pep' width='30' height='30' class="multiple" style="display: none"/>
         
         <div id="switches">
           <div class="switch">
@@ -26,11 +26,11 @@
                 <input type="checkbox" id="pep">Pepperoni
             </div>
         </div>
-        <div id="canvasWrapper">
+        <div>
             <canvas style="border: solid" id="canvas" width="150" height="150"/>
         </div>
-        <div id="map">
-        </div>
+        
+        <div id="map"></div>
         <script type="text/javascript" >
             const ratio=.6;
             var switches=document.getElementsByTagName("input");
@@ -43,6 +43,7 @@
             
              var layout=document.getElementById("layout");
             window.onload=function() {
+                console.log(screen.width)
                resize();
                console.log(canvas.width);
                window.onresize=function(){resize();};
@@ -100,8 +101,6 @@
                 else{
                     layout.href="mobile.css";
                 }
-                console.log(document.getElementById("canvasWrapper").style.width);
-                
                 console.log(document.getElementById("layout").href);
             }
             function fitToContainer(canvas){
