@@ -96,7 +96,7 @@
         });
         bounds.extend(place.geometry.location);
         google.maps.event.addListener(marker, 'click', function() {
-          infoWindow.setContent(place.name);
+          infoWindow.setContent(place.url);
           infoWindow.open(map, this);
           
         });
