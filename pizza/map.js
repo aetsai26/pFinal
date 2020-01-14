@@ -3,7 +3,7 @@
       var markers=[];
       var locations;
       function initMap() {
-        
+
         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 41.881832, lng: -87.623177},
           zoom: 5
@@ -35,8 +35,8 @@
         infoWindow.open(map);
         initSearch(pos);
       }
-      
-      
+
+
       function initSearch(pos){
         map.setCenter(pos);
             var image = {
@@ -65,9 +65,9 @@
                 findNearby(pos);
             });
       }
-      
-      
-      
+
+
+
       function findNearby(location){
         bounds.extend(location);
         var service = new google.maps.places.PlacesService(map);
@@ -78,7 +78,7 @@
                 keyword: 'pizza'
             }, callback);  
       }
-      
+
       function callback(results, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           for (var i = 0; i < results.length; i++) {
@@ -98,7 +98,7 @@
         google.maps.event.addListener(marker, 'click', function() {
           infoWindow.setContent(place.name);
           infoWindow.open(map, this);
-          
+
         });
         markers.push(marker);
-      }
+      } 
